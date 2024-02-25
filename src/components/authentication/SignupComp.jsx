@@ -34,11 +34,13 @@ const SignupComp = () => {
             <div className="grid lg:md:grid-cols-2 items-center min-h-screen">
                 <div className='bg-gradient-to-br from-[#424585] to-[#333] text-white min-h-screen'>
                     <div>
+                        <Link href='/'>
                         <Image
                             src="https://i.ibb.co/h8Dr5zL/Slotify-removebg-preview.png"
                             alt="logo"
                             width={300}
                             height={200} />
+                            </Link>
                     </div>
 
                     <div className="px-20">
@@ -84,6 +86,8 @@ const SignupComp = () => {
                                     className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2" />
                                 <h2 className="cursor-pointer absolute bottom-[37vh] text-2xl right-[3vw]" onClick={() => setShow(!show)}>{show ? <FaEye/> : <FaEyeSlash/>}</h2>
                             </div>
+
+                            <button type="submit" className="btn btn-primary w-full mt-4 rounded-none bg-[#3E58C1] text-[#fff] text-xl">Signup</button>
                         </form>
                             : <form className="w-full" action="" onSubmit={handleSubmit(onSignup)}>
                                 <div>
@@ -106,7 +110,9 @@ const SignupComp = () => {
                                     <h2 className="cursor-pointer absolute bottom-[37vh] text-2xl right-[3vw]" onClick={() => setShow(!show)}>{show ? <FaEye /> : <FaEyeSlash />}</h2>
                                 </div>
 
-                                <h2 className='mt-4 text-[#3E58C1]'>Start your 14 day free trial</h2>
+                                <h2 className='mt-2 text-[#3E58C1] font-rubik'>Start your 14 day free trial</h2>
+
+                                  <button type="submit" className="btn btn-primary w-full mt-4 rounded-none bg-[#3E58C1] text-[#fff] text-xl">Signup</button>
                             </form>}
                     </div>
                 </div>
