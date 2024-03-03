@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import server from '@/config/config';
 import Image from 'next/image';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const SignupComp = () => {
     const [show, setShow] = useState(false);
     const [user, setUser] = useState(true);
     const [org, setOrg] = useState(false);
+    const router = useRouter()
 
     const {
         register,
@@ -20,10 +22,19 @@ const SignupComp = () => {
     } = useForm()
 
     const onSignup = async (data) => {
+        console.log(data)
         try {
-            const res = await axios.post(`${server.server}/createUser`, data);
-            if (res.status === 201) {
+            const res = await axios.post(`http://localhost:5000/api/v1/auth/createUser`, {
+                email: data.email,
+                name: data.name,
+                password: data.password
+            });
+            console.log(res)
+            if (res.data.statusCode === 201) {
                 console.log(res.data);
+                toast("Signed up successfully")
+                router.push('/')
+                
             }
         } catch (e) {
             console.log(e);
@@ -71,18 +82,21 @@ const SignupComp = () => {
                                 <input
                                     type="text"
                                     placeholder="Your full name"
+                                    {...register("name", { required: true })}
                                     className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2" />
                             </div>
                             <div>
                                 <input
                                     type="email"
                                     placeholder="Your email"
+                                    {...register("email", { required: true })}
                                     className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2" />
                             </div>
                             <div>
                                 <input
                                     type={show ? 'text' : 'password'}
                                     placeholder="Your password"
+                                     {...register("password", { required: true })}
                                     className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2" />
                                 <h2 className="cursor-pointer absolute bottom-[37vh] text-2xl right-[3vw]" onClick={() => setShow(!show)}>{show ? <FaEye/> : <FaEyeSlash/>}</h2>
                             </div>

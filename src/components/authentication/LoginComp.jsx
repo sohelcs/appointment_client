@@ -6,11 +6,14 @@ import Image from 'next/image';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const LoginComp = () => {
     const [show, setShow] = useState(false);
     const [user, setUser] = useState(true);
     const [org, setOrg] = useState(false);
+    const router = useRouter()
 
     const {
         register,
@@ -21,9 +24,12 @@ const LoginComp = () => {
 
     const onLogin = async (data) => {
         try {
-            const res = await axios.post(`${server.server}/createUser`, data);
-            if (res.status === 201) {
+            const res = await axios.post(`http://localhost:5000/api/v1/auth/login`, data);
+            if (res.data.statusCode === 201) {
                 console.log(res.data);
+                toast("Logged in successfully")
+                router.push('/')
+
             }
         } catch (e) {
             console.log(e);
