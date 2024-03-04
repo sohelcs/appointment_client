@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import Cookies from 'js-cookie'; 
 import server from '@/config/config';
 import Image from 'next/image';
 import { FaEyeSlash } from "react-icons/fa";
@@ -24,12 +25,14 @@ const LoginComp = () => {
 
     const onLogin = async (data) => {
         try {
+            console.log(data)
             const res = await axios.post(`http://localhost:5000/api/v1/auth/login`, data);
-            if (res.data.statusCode === 201) {
+            if (res.data.statusCode === 200) {
                 console.log(res.data);
+                Cookies.set("accessToken", res.data.data.token); 
+                Cookies.set("refreshToken", res.data.data.refreshToken);
                 toast("Logged in successfully")
                 router.push('/')
-
             }
         } catch (e) {
             console.log(e);
@@ -61,25 +64,29 @@ const LoginComp = () => {
 
                 </div>
                 <div className="p-8">
-                    
+
                     <div className="flex justify-center w-full mt-6">
-                            <form className="w-full" action="" onSubmit={handleSubmit(onLogin)}>
+                        <form className="w-full" onSubmit={handleSubmit(onLogin)}>
                             <div>
                                 <input
                                     type="email"
                                     placeholder="Your email"
-                                    className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2" />
+                                    className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2"
+                                    {...register("email", { required: true })}
+                                />
                             </div>
                             <div>
                                 <input
                                     type={show ? 'text' : 'password'}
                                     placeholder="Your password"
-                                    className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2" />
+                                    className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2"
+                                    {...register("password", { required: true })}
+                                />
                                 <h2 className="cursor-pointer absolute bottom-[37vh] text-2xl right-[3vw]" onClick={() => setShow(!show)}>{show ? <FaEye /> : <FaEyeSlash />}</h2>
                             </div>
                             <button type="submit" className="btn btn-primary w-full mt-4 rounded-none bg-[#3E58C1] text-[#fff] text-xl">Login</button>
                         </form>
-                            
+
                     </div>
                 </div>
 

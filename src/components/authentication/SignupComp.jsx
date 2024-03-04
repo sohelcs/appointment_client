@@ -27,7 +27,8 @@ const SignupComp = () => {
             const res = await axios.post(`http://localhost:5000/api/v1/auth/createUser`, {
                 email: data.email,
                 name: data.name,
-                password: data.password
+                password: data.password,
+                role: user ? "user" : "brand"
             });
             console.log(res)
             if (res.data.statusCode === 201) {
