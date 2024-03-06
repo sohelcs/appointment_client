@@ -6,43 +6,36 @@ import Payment from './Payment';
 
 const Appointment = () => {
     const [step, setStep] = useState(1);
-    const [selectedService, setSelectedService] = useState(null);
+    const [selectedService, setSelectedService] = useState([]);
     const [selectedProfessional, setSelectedProfessional] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [selectedPayment, setSelectedPayment] = useState(null);
-
-    const handleServiceSelection = (service) => {
-        setSelectedService(service);
+    
+    const handleNextStep = () => {
         setStep(step + 1);
-    };
+    }
 
-    const handleProfessionalSelection = (professional) => {
-        setSelectedProfessional(professional);
-        setStep(step + 1);
-    };
-
-    const handleTimeSelection = (date, slot) => {
-        setSelectedDate(date);
-        setSelectedSlot(slot);
-        setStep(step + 1);
-    };
-
-    const handlePaymentSelection = (payment) => {
-        setSelectedPayment(payment);
-        // Process the booking with selectedService, selectedProfessional, selectedDate, selectedSlot, and selectedPayment
-    };
 
     const renderStep = () => {
         switch (step) {
             case 1:
-                return <ChooseService handleServiceSelection={handleServiceSelection} />;
+                return <ChooseService
+                    setSelectedService={setSelectedService}
+                    handleNextStep={handleNextStep} />;
             case 2:
-                return <ChooseProfessional handleProfessionalSelection={handleProfessionalSelection} />;
+                return <ChooseProfessional
+                    setSelectedProfessional={setSelectedProfessional}
+                    handleNextStep={handleNextStep} />;
             case 3:
-                return <ChooseTIme handleTimeSelection={handleTimeSelection} />;
+                return <ChooseTIme
+                    setSelectedDate={setSelectedDate}
+                    setSelectedSlot={setSelectedSlot}
+                    handleNextStep={handleNextStep} />;
             case 4:
-                return <Payment handlePaymentSelection={handlePaymentSelection} />;
+                return <Payment
+                    setSelectedPayment={setSelectedPayment}
+                    handleNextStep={handleNextStep} />;
             default:
                 return null;
         }
