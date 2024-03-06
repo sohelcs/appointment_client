@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 import server from '@/config/config';
 import Image from 'next/image';
 import { FaEyeSlash } from "react-icons/fa";
@@ -29,7 +29,7 @@ const LoginComp = () => {
             const res = await axios.post(`http://localhost:5000/api/v1/auth/login`, data);
             if (res.data.statusCode === 200) {
                 console.log(res.data);
-                Cookies.set("accessToken", res.data.data.token); 
+                Cookies.set("accessToken", res.data.data.token);
                 Cookies.set("refreshToken", res.data.data.refreshToken);
                 toast("Logged in successfully")
                 router.push('/')
@@ -82,11 +82,10 @@ const LoginComp = () => {
                                     className="input input-bordered w-full min-w-xl bg-[#f5f5f5] rounded-none outline-[0px] mt-2"
                                     {...register("password", { required: true })}
                                 />
-                                <h2 className="cursor-pointer absolute bottom-[37vh] text-2xl right-[3vw]" onClick={() => setShow(!show)}>{show ? <FaEye /> : <FaEyeSlash />}</h2>
                             </div>
                             <button type="submit" className="btn btn-primary w-full mt-4 rounded-none bg-[#3E58C1] text-[#fff] text-xl">Login</button>
+                            <h2 className="text-[18px] mt-10 font-rubik">Don&apos;t have an account? <Link href="/signup" className="underline text-primary">signup</Link></h2>
                         </form>
-
                     </div>
                 </div>
 

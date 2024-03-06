@@ -29,6 +29,7 @@ const Appointment = () => {
                     handleNextStep={handleNextStep} />;
             case 3:
                 return <ChooseTIme
+                    selectedDate={selectedDate}
                     setSelectedDate={setSelectedDate}
                     setSelectedSlot={setSelectedSlot}
                     handleNextStep={handleNextStep} />;
