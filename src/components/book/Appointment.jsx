@@ -15,41 +15,35 @@ const Appointment = () => {
     const handleNextStep = () => {
         setStep(step + 1);
     }
-
-
-    const renderStep = () => {
-        switch (step) {
-            case 1:
-                return <ChooseService
+    return (
+        <div className="bg-[#f5f5f5] h-screen pt-[15vh]">
+        <div className="max-w-[1440px] mx-auto">        
+            <h1 style={{color: '#030303'}} className="text-3xl font-semibold font-rubik text-[#0303003] text-center">Book an Appointment</h1>
+            <div className="pt-24 pb-8">
+                {step == 1 ? (
+                     <ChooseService
                     setSelectedService={setSelectedService}
-                    handleNextStep={handleNextStep} />;
-            case 2:
-                return <ChooseProfessional
+                    handleNextStep={handleNextStep} />
+                ) : step == 2 ? (
+                     <ChooseProfessional
                     setSelectedProfessional={setSelectedProfessional}
-                    handleNextStep={handleNextStep} />;
-            case 3:
-                return <ChooseTIme
+                    handleNextStep={handleNextStep} />   
+                ) : step == 3 ? (
+                    <ChooseTIme
                     selectedDate={selectedDate}
                     setSelectedDate={setSelectedDate}
                     setSelectedSlot={setSelectedSlot}
-                    handleNextStep={handleNextStep} />;
-            case 4:
-                return <Payment
+                    handleNextStep={handleNextStep} />
+                ) : (
+<Payment
                     setSelectedPayment={setSelectedPayment}
-                    handleNextStep={handleNextStep} />;
-            default:
-                return null;
-        }
-    };
-    return (
-        <div>
-            <h1>Book an Appointment</h1>
-            <div>
-                {renderStep()}
+                    handleNextStep={handleNextStep} />
+                )}
             </div>
             <div>
-                {step > 1 && <button onClick={() => setStep(step - 1)}>Previous</button>}
-                {step < 4 && <button onClick={() => setStep(step + 1)}>Next</button>}
+                {step > 1 && <button className='btn btn-primary' onClick={() => setStep(step - 1)}>Previous</button>}
+                {step < 4 && <button className='btn btn-primary' onClick={() => setStep(step + 1)}>Next</button>}
+            </div>
             </div>
         </div>
     );
