@@ -1,9 +1,10 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-const ChooseProfessional = ({ setSelectedProfessional, step, setStep }) => {
+const ChooseProfessional = ({ selectedProfessional, setSelectedProfessional, step, setStep }) => {
     const [professionals, setProfessionals] = useState([]);
     const slug = useRouter().query.slug;
 
@@ -72,6 +73,12 @@ const ChooseProfessional = ({ setSelectedProfessional, step, setStep }) => {
         }
         getProfessionals();
     }, [slug]);
+
+    useEffect(() => {
+        if (selectedProfessional !== null) {
+          Cookies.set('professional', JSON.stringify(selectedProfessional), { expires: 1 });
+        }
+    }, [selectedProfessional]);
     return (
         <div className=''>
             <h2 style={{ color: '#3E58C1' }} className='pb-4 text-2xl '>Select a Professional</h2>

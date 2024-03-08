@@ -110,7 +110,7 @@ const SignupComp = () => {
                         <button onClick={() => {
                             setUser(false)
                             setOrg(true)
-                        }} className={`text-3xl font-semibold font-playfair border-[2px] border-[#3E58C1] ${org ? 'bg-[#3E58C1] text-[#fff]' : 'text-[#3E58C1]'} py-4 px-6 w-full`}>Join As an Organization</button>
+                        }} className={`text-3xl font-semibold font-playfair border-[2px] border-[#3E58C1] ${org ? 'bg-[#3E58C1] text-[#fff]' : 'text-[#3E58C1]'} py-4 px-6 w-full`}>Join As a Brand</button>
                     </div>
                     <div className="flex justify-center w-full mt-6">
                         {user ? <form className="w-full" action="" onSubmit={handleSubmit(onSignup)}>
@@ -203,3 +203,6 @@ const SignupComp = () => {
 };
 
 export default SignupComp;
+
+
+// 12345678

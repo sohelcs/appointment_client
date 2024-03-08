@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
@@ -62,6 +63,12 @@ const ChooseService = ({ selectedServices, setSelectedServices }) => {
             setSelectedServices([...selectedServices, item]);
         }
     };
+
+  useEffect(() => {
+      if (selectedServices.length > 1) {
+          Cookies.set('services', JSON.stringify(selectedServices), { expires: 1 });
+      }
+  }, [selectedServices]);
 
     return (
         <div>

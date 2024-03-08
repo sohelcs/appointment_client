@@ -17,6 +17,7 @@ const Appointment = () => {
     const handleNextStep = () => {
         setStep(step + 1);
     }
+    
     return (
         <div className="bg-[#f5f5f5] h-screen pt-[15vh]">
             <div style={{gridTemplateColumns: 'repeat(12, 1fr)', columnGap: '20px'}} className="max-w-[1440px] mx-auto grid grid-cols-2 col-span-12">
@@ -28,7 +29,8 @@ const Appointment = () => {
                                 setSelectedServices={setSelectedServices}
                                 selectedServices={selectedServices} />
                         ) : step == 2 ? (
-                            <ChooseProfessional
+                                <ChooseProfessional
+                                    selectedProfessional={selectedProfessional}
                                     setSelectedProfessional={setSelectedProfessional}
                                     step={step}
                                 setStep={setStep}/>
@@ -36,8 +38,9 @@ const Appointment = () => {
                             <ChooseTIme
                                 selectedDate={selectedDate}
                                 setSelectedDate={setSelectedDate}
+                                selectedSlot={selectedSlot}
                                 setSelectedSlot={setSelectedSlot}
-                                handleNextStep={handleNextStep} />
+                                selectedProfessional={selectedProfessional} />
                         ) : (
                             <Payment
                                 setSelectedPayment={setSelectedPayment}

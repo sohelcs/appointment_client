@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const ChooseTime = ({ selectedDate, setSelectedDate, setSelectedSlot, handleNextStep, selectedProfessional }) => {
+const ChooseTime = ({ selectedDate, setSelectedDate, selectedSlot, setSelectedSlot, selectedProfessional }) => {
     const [availableSlots, setAvailableSlots] = useState([]);
     const [nextTenDays, setNextTenDays] = useState([]);
 
@@ -47,11 +48,6 @@ const ChooseTime = ({ selectedDate, setSelectedDate, setSelectedSlot, handleNext
         }
     };
 
-    const handleSlotSelection = (slot) => {
-        setSelectedSlot(slot);
-        handleNextStep();
-    };
-
     const handleDateSelection = (date) => {
         setSelectedDate(date.toISOString().split('T')[0]);
     };
@@ -65,6 +61,13 @@ const ChooseTime = ({ selectedDate, setSelectedDate, setSelectedSlot, handleNext
         return days[date.getDay()];
     };
 
+    useEffect(() => {
+        if (selectedDate !== null && selectedSlot !== null) {
+            Cookies.set('date', selectedDate, { expires: 1 });
+            Cookies.set('slot', selectedSlot, { expires: 1 });
+        }
+    }, [selectedDate, selectedSlot]);
+
     return (
         <div>
             <h2 style={{ color: '#3E58C1' }} className='pb-4 text-2xl '>Select a Date</h2>
@@ -72,7 +75,7 @@ const ChooseTime = ({ selectedDate, setSelectedDate, setSelectedSlot, handleNext
                 {nextTenDays.map((date, index) => (
                     <li className='cursor-pointer text-center hover:bg-[#ddd] rounded-md ' key={index} onClick={() => handleDateSelection(date)}>
                         <div className='text-lg text-[#333]'>{date.toLocaleDateString('en-US', { month: 'short' })}</div>
-                        <div className='font-semibold text-[#333] fontrubik'>{getFormattedDate(date)}</div>
+                        <div className='font-semibold text-[#333] font-rubik'>{getFormattedDate(date)}</div>
                         <div className='text-[#424242]'>{getDayName(date)}</div>
                     </li>
                 ))}
@@ -81,9 +84,9 @@ const ChooseTime = ({ selectedDate, setSelectedDate, setSelectedSlot, handleNext
                 <>
                     <h2 style={{ color: '#3E58C1' }} className='pt-8 pb-4 text-2xl '>Available Slots for {new Date(selectedDate).getDate()}th {new Date(selectedDate).toLocaleDateString('en-US', { month: 'long' })}</h2>
                     {availableSlots.length > 0 ? (
-                        <ul>
+                        <ul className='grid lg:md:grid-cols-5 grid-cols-3 gap-4'>
                             {availableSlots.map((slot, index) => (
-                                <li key={index} onClick={() => handleSlotSelection(slot)}>
+                                <li key={index} onClick={() => setSelectedSlot(slot)} className='bg-primary text-[#fff] font-rubik font-medium px-6 py-2 rounded-md'>
                                     {slot}
                                 </li>
                             ))}
