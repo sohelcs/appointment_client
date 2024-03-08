@@ -7,6 +7,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "i.ibb.co",
       },
+      {
+        protocol: "https",
+        hostname: "t4.ftcdn.net",
+      },
     ],
   }
 };

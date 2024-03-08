@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 
-const ChooseService = () => {
-    const [selectedServices, setSelectedServices] = useState([]);
+const ChooseService = ({ selectedServices, setSelectedServices }) => {
+ 
     const [service, setService] = useState([]);
     const slug = useRouter().query.slug;
     console.log(selectedServices)
@@ -56,21 +56,29 @@ const ChooseService = () => {
     // }, [slug])
 
     const handleServiceSelection = (item) => {
-        if (selectedServices.includes(item)) {
-            setSelectedServices(selectedServices.filter(service => service !== item));
+        if (selectedServices.some(service => service.title === item.title)) {
+            setSelectedServices(selectedServices.filter(service => service.title !== item.title));
         } else {
             setSelectedServices([...selectedServices, item]);
         }
     };
+
     return (
         <div>
-            <h2 className='pb-2 text-2xl '>Choose Service</h2>
-            <div className="grid lg:md:grid-cols-5 grid-cols-3 gap-x-4">
+            <h2 style={{ color: '#3E58C1' }} className='pb-4 text-2xl '>Choose Service</h2>
+            <div className="grid lg:md:grid-cols-3 grid-cols-2 gap-4">
                 {datas.map((item, index) => (
-                    <div className={`p-4 bg-[#fff] rounded-sm shadow-lg cursor-pointer ${selectedServices.includes(item) ? 'border-green-500 border-4' : ''}`} key={index} onClick={() => handleServiceSelection(item)}>
-                        {selectedServices.includes(item) && <AiOutlineCheckCircle className="absolute top-2 right-2 text-green-500 text-2xl" />}
-                        <h2 style={{ color: '#333' }} className="text-xl mb-2">{item.title}</h2>
-                        <p>{item.description}</p>
+                    <div
+                        style={{ backgroundColor: '#fff' }}
+                        className={`p-4 bg-[#fff] rounded-sm shadow-lg cursor-pointer ${selectedServices.includes(item) ? 'bg-green-500 border-4' : ''}`} key={index} onClick={() => handleServiceSelection(item)}>
+                        {selectedServices.some(service => service.title === item.title) && <AiOutlineCheckCircle className="absolute top-2 right-2 text-green-500 text-2xl" />}
+                        <h2 style={{ color: '#333' }} className="text-xl ">{item.title}</h2>
+                        <h2>{item.category}</h2>
+                        <div className='font-rubik'>
+                            <h2 className='text-lg font-semibold mt-2' style={{ color: '#62bf7b' }}>${item.price}</h2>
+                            <h3 style={{ color: '#424242' }} className='font-semibold'>{item.min_time}min - {item.max_time}min</h3>
+                            <p style={{ color: '#424242' }}>{item.description}</p>
+                      </div>
                     </div>
                 ))}
             </div>
