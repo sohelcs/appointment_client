@@ -59,20 +59,20 @@ const ChooseProfessional = ({ selectedProfessional, setSelectedProfessional, ste
         }
     ]
 
-    useEffect(() => {
-        const getProfessionals = async () => {
-            try {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/professional/getAllProfessionals?brand=${slug}`);
-                console.log(res);
-                if (res.status === 200) {
-                    setProfessionals(res.data);
-                }
-            }catch (error) {
-                console.log(error)
-            }
-        }
-        getProfessionals();
-    }, [slug]);
+    // useEffect(() => {
+    //     const getProfessionals = async () => {
+    //         try {
+    //             const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/professional/getAllProfessionals?brand=${slug}`);
+    //             console.log(res);
+    //             if (res.status === 200) {
+    //                 setProfessionals(res.data);
+    //             }
+    //         }catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+    //     getProfessionals();
+    // }, [slug]);
 
     useEffect(() => {
         if (selectedProfessional !== null) {

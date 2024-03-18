@@ -30,7 +30,7 @@ const ChooseTime = ({ selectedDate, setSelectedDate, selectedSlot, setSelectedSl
 
     const fetchProfessionalSlots = async (professional, date) => {
         try {
-            const response = await axios.get(`/api/professional/${professional}/slots?date=${date}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/professional/${professional}/slots?date=${date}`);
             setAvailableSlots(response.data.slots);
         } catch (error) {
             console.error('Error fetching professional slots:', error);
