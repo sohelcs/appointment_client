@@ -19,31 +19,27 @@ const ChooseTime = ({ selectedDate, setSelectedDate, selectedSlot, setSelectedSl
     }, []);
 
     useEffect(() => {
-        // If a professional is selected, fetch available slots for that professional and selected date
+        // If a professional is selected, fetch available slots for that professional
         if (selectedProfessional) {
-            fetchProfessionalSlots(selectedProfessional, selectedDate);
-        } else {
-            // If no professional is selected, fetch available slots for all professionals and selected date
-            fetchAllProfessionalSlots(selectedDate);
+            fetchProfessionalSlots(selectedProfessional);
         }
-    }, [selectedDate, selectedProfessional]);
+    }, [selectedProfessional, selectedDate]);
 
-    const fetchProfessionalSlots = async (professional, date) => {
+    const fetchProfessionalSlots = async (professional) => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/professional/${professional}/slots?date=${date}`);
-            setAvailableSlots(response.data.slots);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/professional/getSingleProf/${professional._id}`);
+            console.log(response.data.data);
+            const { available_days } = response.data.data;
+            if (response.data.data.available_days) {
+                console.log(selectedDate)
+                const slots = available_days.find(day => day.date === selectedDate)?.available_slots || [];
+                console.log(slots)
+                setAvailableSlots(slots);
+            } else {
+                setAvailableSlots([]);
+            }
         } catch (error) {
             console.error('Error fetching professional slots:', error);
-            // Handle error
-        }
-    };
-
-    const fetchAllProfessionalSlots = async (date) => {
-        try {
-            const response = await axios.get(`/api/professionals/slots?date=${date}`);
-            setAvailableSlots(response.data.slots);
-        } catch (error) {
-            console.error('Error fetching all professionals slots:', error);
             // Handle error
         }
     };
@@ -51,6 +47,7 @@ const ChooseTime = ({ selectedDate, setSelectedDate, selectedSlot, setSelectedSl
     const handleDateSelection = (date) => {
         setSelectedDate(date.toISOString().split('T')[0]);
     };
+
     const getFormattedDate = (date) => {
         const options = { day: 'numeric' };
         return date.toLocaleDateString('en-US', options);
@@ -86,8 +83,8 @@ const ChooseTime = ({ selectedDate, setSelectedDate, selectedSlot, setSelectedSl
                     {availableSlots.length > 0 ? (
                         <ul className='grid lg:md:grid-cols-5 grid-cols-3 gap-4'>
                             {availableSlots.map((slot, index) => (
-                                <li key={index} onClick={() => setSelectedSlot(slot)} className='bg-primary text-[#fff] font-rubik font-medium px-6 py-2 rounded-md'>
-                                    {slot}
+                                <li key={index} onClick={() => setSelectedSlot(slot)} className='bg-primary text-[#fff] font-rubik font-medium px-6 py-2 rounded-md text-center cursor-pointer hover:bg-opacity-80'>
+                                    {slot.slice(11, 16)}
                                 </li>
                             ))}
                         </ul>

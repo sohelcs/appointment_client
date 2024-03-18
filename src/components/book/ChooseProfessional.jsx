@@ -7,72 +7,20 @@ import React, { useEffect, useState } from 'react';
 const ChooseProfessional = ({ selectedProfessional, setSelectedProfessional, step, setStep }) => {
     const [professionals, setProfessionals] = useState([]);
     const slug = useRouter().query.slug;
-
-    const datas = [
-        {
-            "name": "John Doe",
-            "description": "Experienced professional with expertise in various services.",
-            "image": "https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg",
-            "services": ["Service A", "Service B", "Service C"],
-            "available_days": [
-                {
-                    "date": "2024-03-10",
-                    "available_slots": ["10:00 AM", "2:00 PM"]
-                },
-                {
-                    "date": "2024-03-11",
-                    "available_slots": ["11:00 AM", "3:00 PM"]
+    useEffect(() => {
+        const getProfessionals = async () => {
+            try {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/professional/getAllProfessionals?brand=${slug}`);
+                console.log(res)
+                if (res.status === 200) {
+                    setProfessionals(res.data.data);
                 }
-            ]
-        },
-        {
-            "name": "Jane Smith",
-            "description": "Skilled professional specializing in specific services.",
-            "image": "https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg",
-            "services": ["Service D", "Service E", "Service F"],
-            "available_days": [
-                {
-                    "date": "2024-03-10",
-                    "available_slots": ["9:00 AM", "1:00 PM"]
-                },
-                {
-                    "date": "2024-03-12",
-                    "available_slots": ["10:00 AM", "2:00 PM"]
-                }
-            ]
-        },
-        {
-            "name": "Alex Johnson",
-            "description": "Certified professional with years of experience.",
-            "image": "https://t4.ftcdn.net/jpg/02/14/74/61/360_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg",
-            "services": ["Service G", "Service H", "Service I"],
-            "available_days": [
-                {
-                    "date": "2024-03-11",
-                    "available_slots": ["8:00 AM", "12:00 PM"]
-                },
-                {
-                    "date": "2024-03-12",
-                    "available_slots": ["9:00 AM", "1:00 PM"]
-                }
-            ]
+            }catch (error) {
+                console.log(error)
+            }
         }
-    ]
-
-    // useEffect(() => {
-    //     const getProfessionals = async () => {
-    //         try {
-    //             const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/professional/getAllProfessionals?brand=${slug}`);
-    //             console.log(res);
-    //             if (res.status === 200) {
-    //                 setProfessionals(res.data);
-    //             }
-    //         }catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
-    //     getProfessionals();
-    // }, [slug]);
+        getProfessionals();
+    }, [slug]);
 
     useEffect(() => {
         if (selectedProfessional !== null) {
@@ -83,7 +31,7 @@ const ChooseProfessional = ({ selectedProfessional, setSelectedProfessional, ste
         <div className=''>
             <h2 style={{ color: '#3E58C1' }} className='pb-4 text-2xl '>Select a Professional</h2>
             <div className='grid lg:md:grid-cols-3 grid-cols-2 gap-4'>
-                {datas.map((professional, index) => (
+                {professionals.map((professional, index) => (
                     <div key={index}
                         style={{hover: "shadow-lg"}}
                         className='flex flex-col justify-center items-center bg-[#f5f5f5] p-4 rounded-lg cursor-pointer transition-all duration-150 hover:shadow-md'

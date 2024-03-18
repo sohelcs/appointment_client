@@ -17,7 +17,7 @@ const Appointment = () => {
     const handleNextStep = () => {
         setStep(step + 1);
     }
-    
+    console.log(selectedSlot)
     return (
         <div className="bg-[#f5f5f5] h-screen pt-[15vh]">
             <div style={{gridTemplateColumns: 'repeat(12, 1fr)', columnGap: '20px'}} className="max-w-[1440px] mx-auto grid grid-cols-2 col-span-12">
@@ -96,8 +96,20 @@ const Appointment = () => {
                     {/* time */}
                     <div className='mt-2'>
                         <h2 style={{ color: '#3E58C1' }} className='text-xl font-playfair mb-4'>Selected Time</h2>
-                        <div className="">
-
+                        <div className="flex items-center">
+                            {selectedSlot && (
+                                <p className="font-rubik text-lg text-[#333]">
+                                    {new Date(selectedSlot).toLocaleTimeString('en-US', {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}{' '}
+                                    {new Date(selectedSlot).toLocaleDateString('en-US', {
+                                        month: 'long',
+                                        day: 'numeric',
+                                        year: 'numeric'
+                                    })}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

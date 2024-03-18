@@ -7,6 +7,7 @@ import { AiOutlineCheckCircle } from 'react-icons/ai';
 const ChooseService = ({ selectedServices, setSelectedServices }) => {
  
     const [service, setService] = useState([]);
+    const [categories, setCategories] = useState([]);
     const slug = useRouter().query.slug;
     console.log(selectedServices)
     const datas = [
@@ -42,19 +43,35 @@ const ChooseService = ({ selectedServices, setSelectedServices }) => {
         }
     ]
 
-    // useEffect(() => {
-    //     const getServices = async () => {
-    //         try {
-    //             const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/service/getAllServices?brand=${slug}`);
-    //             if (res.status === 200) {
-    //                 setService(res.data)
-    //             }
-    //         }catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
-    //     getServices()
-    // }, [slug])
+    useEffect(() => {
+        const getServices = async () => {
+            try {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/service/getAllServices?brand=${slug}`);
+                if (res.status === 200) {
+                    setService(res.data.data)
+                }
+            }catch (error) {
+                console.log(error)
+            }
+        }
+
+        const getCategories = async() => {
+            try {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER}/category/getAllCategories`);
+                if (res.status === 200) {
+                    setCategories(res.data.data)
+                }
+            }catch (error) {
+                console.log(error)
+            }
+        }
+        getServices();
+        getCategories();
+    }, [slug])
+
+    const getCategoryById = (categoryId) => {
+        return categories.find(category => category._id === categoryId);
+    };
 
     const handleServiceSelection = (item) => {
         if (selectedServices.some(service => service.title === item.title)) {
@@ -74,17 +91,17 @@ const ChooseService = ({ selectedServices, setSelectedServices }) => {
         <div>
             <h2 style={{ color: '#3E58C1' }} className='pb-4 text-2xl '>Choose Service</h2>
             <div className="grid lg:md:grid-cols-3 grid-cols-2 gap-4">
-                {datas.map((item, index) => (
+                {service.map((item, index) => (
                     <div
                         style={{ backgroundColor: '#fff' }}
                         className={`p-4 bg-[#fff] rounded-sm shadow-lg cursor-pointer ${selectedServices.includes(item) ? 'bg-green-500 border-4' : ''}`} key={index} onClick={() => handleServiceSelection(item)}>
                         {selectedServices.some(service => service.title === item.title) && <AiOutlineCheckCircle className="absolute top-2 right-2 text-green-500 text-2xl" />}
                         <h2 style={{ color: '#333' }} className="text-xl ">{item.title}</h2>
-                        <h2>{item.category}</h2>
+                        {categories.length > 0 && <h2>{getCategoryById(item.category).name}</h2>}
                         <div className='font-rubik'>
                             <h2 className='text-lg font-semibold mt-2' style={{ color: '#62bf7b' }}>${item.price}</h2>
                             <h3 style={{ color: '#424242' }} className='font-semibold'>{item.min_time}min - {item.max_time}min</h3>
-                            <p style={{ color: '#424242' }}>{item.description}</p>
+                            <p style={{ color: '#424242' }} className="mt-2">{item.description}</p>
                       </div>
                     </div>
                 ))}
