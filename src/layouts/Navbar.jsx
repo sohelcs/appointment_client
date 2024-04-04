@@ -7,7 +7,7 @@ import { CiLogin, CiLogout } from "react-icons/ci";
 
 const Navbar = () => {
     const [token, setToken] = useState(Cookies.get('accessToken'));
-    const [authrozied, setAuthorized] = useState(false);
+    const [authorized, setAuthorized] = useState(false);
     const email = Cookies.get('email');
     const logout = () => {
         // Remove all cookies by using the '*' wildcard
@@ -30,16 +30,16 @@ const Navbar = () => {
             <Link href="/" >
                 <Image src="https://i.ibb.co/V3LJrK9/Slotify-1.png" alt="logo" width={200} height={100} />
             </Link>
-            <div className="lg:md:block hidden">
+            <div className="">
                 <ul style={{ columnGap: '20px', color: '#030303' }} className='flex items-center justify-center gap-x-[10px] font-rubik text-xl font-normal'>
                     <li className="text-[#030303] hover:text-primary cursor-pointer menuNav">Documentation</li>
                     <li className=" text-[#030303] hover:text-primary cursor-pointer menuNav">Contact</li>
                 </ul>
             </div>
-            <div className="lg:md:block hidden">
+            <div className="">
                 <div style={{ columnGap: '20px', color: '#030303' }} className='flex items-center gap-x-4 font-rubik font-normal'>
-                    {authrozied ? <button onClick={logout} className="text-3xl menuNav"><CiLogout /></button> : <Link className="text-3xl menuNav" href="/login"><CiLogin /></Link>}
-                    {authrozied && <Link className="text-3xl menuNav" href="/dashboard"><BiSolidDashboard /></Link>}
+                    {authorized ? <button onClick={logout} className="text-3xl menuNav"><CiLogout /></button> : <Link className="text-3xl menuNav" href="/login"><CiLogin /></Link>}
+                    {authorized && <Link className="text-3xl menuNav" href="/dashboard/appointments"><BiSolidDashboard /></Link>}
 
                 </div>
             </div>

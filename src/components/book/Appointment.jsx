@@ -5,6 +5,9 @@ import ChooseTIme from './ChooseTIme';
 import Payment from './Payment';
 import { MdOutlineArrowForwardIos, MdOutlineArrowBackIos } from "react-icons/md";
 import Image from 'next/image';
+import axios from "axios";
+import Cookies from 'js-cookie';
+
 
 const Appointment = () => {
     const [step, setStep] = useState(1);
@@ -18,6 +21,45 @@ const Appointment = () => {
         setStep(step + 1);
     }
     console.log(selectedSlot)
+
+    const bookAppointment = async () => {
+        const total_price = Number(Cookies.get("total"));
+        const payable = Number(Cookies.get("payable"));
+        const date = Cookies.get("date");
+        const time = Cookies.get("slot").slice(11, 16);
+        const servicesData = JSON.parse(Cookies.get("services"));
+        const name = Cookies.get("name")
+        const email = Cookies.get("email")
+        const professional = JSON.parse(Cookies.get("professional"));
+
+        try{
+            const token = Cookies.get("accessToken");
+            const headers = {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            };
+             const paymentRes = await axios.post(`${process.env.NEXT_PUBLIC_SERVER}/payment/create-payment-intent`, {
+                email: email,
+                client_email: email,
+                client_name: name,
+                professional: professional,
+                service: servicesData,
+                date: date,
+                time: time,
+                total_price: total_price,
+                paid: payable,
+            }, { headers });
+
+        if (paymentRes.data.data.url) {
+            // Redirect to the payment URL
+            window.location.href = paymentRes.data.data.url;
+        } else {
+            toast.error('Failed to initiate payment.');
+        }
+        }catch(e){
+            console.log(e)
+        }
+    }
     return (
         <div className="bg-[#f5f5f5] h-screen pt-[15vh]">
             <div style={{gridTemplateColumns: 'repeat(12, 1fr)', columnGap: '20px'}} className="max-w-[1440px] mx-auto grid grid-cols-2 col-span-12">
@@ -34,7 +76,7 @@ const Appointment = () => {
                                     setSelectedProfessional={setSelectedProfessional}
                                     step={step}
                                 setStep={setStep}/>
-                        ) : step == 3 ? (
+                        ) : step == 3 ?(
                             <ChooseTIme
                                 selectedDate={selectedDate}
                                 setSelectedDate={setSelectedDate}
@@ -45,11 +87,14 @@ const Appointment = () => {
                             <Payment
                                 setSelectedPayment={setSelectedPayment}
                                 handleNextStep={handleNextStep} />
-                        )}
+                        )
+                        }
                     </div>
                     <div className='flex items-center gap-x-4'>
                         {step > 1 && <button style={{ color: '#3E58C1' }} className='btn text-xl bg-[#fff] border-primary border-[2px]' onClick={() => setStep(step - 1)}><MdOutlineArrowBackIos /></button>}
                         {step < 4 && <button style={{ color: '#fff' }} className='btn text-xl bg-primary border-none' onClick={() => setStep(step + 1)}><MdOutlineArrowForwardIos /></button>}
+                        {step === 4 && <button className='btn text-xl bg-primary border-none text-[#fff]' onClick={() => bookAppointment()}>Book</button>}
+
                     </div>
                 </div>
                 <div className='col-span-4 bg-[#fff] p-4 rounded-md'>

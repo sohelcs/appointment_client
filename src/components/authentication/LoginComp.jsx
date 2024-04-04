@@ -31,6 +31,7 @@ const LoginComp = () => {
                 console.log(res.data);
                 Cookies.set("accessToken", res.data.data.token);
                 Cookies.set("refreshToken", res.data.data.refreshToken);
+                Cookies.set("email", res.data.data.user.email);
                 toast("Logged in successfully")
                 router.push('/')
             }
