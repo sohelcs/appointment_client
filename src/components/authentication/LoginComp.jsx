@@ -26,7 +26,7 @@ const LoginComp = () => {
     const onLogin = async (data) => {
         try {
             console.log(data)
-            const res = await axios.post(`http://localhost:5000/api/v1/auth/login`, data);
+            const res = await axios.post(`https://appointment-server-iota.vercel.app/api/v1/auth/login`, data);
             if (res.data.statusCode === 200) {
                 console.log(res.data);
                 Cookies.set("accessToken", res.data.data.token);

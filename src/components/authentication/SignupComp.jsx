@@ -56,7 +56,7 @@ const SignupComp = () => {
             }
         }
         try {
-            const res = await axios.post(`http://localhost:5000/api/v1/auth/createUser`, payload);
+            const res = await axios.post(`https://appointment-server-iota.vercel.app/api/v1/auth/createUser`, payload);
             console.log(res)
             if (res.data.statusCode === 200) {
                 console.log(res.data);
